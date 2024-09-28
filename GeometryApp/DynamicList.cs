@@ -1,45 +1,3 @@
-using System;
-
-public class MyPoint
-{
-    public void Move()
-    {
-        Console.WriteLine("Точка перемещена.");
-    }
-}
-
-public class Segment
-{
-    public void Move()
-    {
-        Console.WriteLine("Сегмент перемещен.");
-    }
-}
-
-public class MyRectangle
-{
-    public void Move()
-    {
-        Console.WriteLine("Прямоугольник перемещен.");
-    }
-}
-
-public class MyEllipse
-{
-    public void Move()
-    {
-        Console.WriteLine("Эллипс перемещен.");
-    }
-}
-
-public class MyCircle
-{
-    public void Move()
-    {
-        Console.WriteLine("Круг перемещен.");
-    }
-}
-
 public class MyDynamicList
 {
     private dynamic[] _items;
@@ -118,43 +76,4 @@ public class MyDynamicList
     }
 }
 
-public class Program
-{
-    public static void Main()
-    {
-        MyDynamicList shapes = new MyDynamicList();
-        shapes.Add(new MyPoint());
-        shapes.Add(new Segment());
-        shapes.Add(new MyRectangle());
-        shapes.Add(new MyEllipse());
-        shapes.Add(new MyCircle());
 
-        // Вызываем метод Move() для каждой фигуры
-        for (int i = 0; i < shapes.Count; i++)
-        {
-            shapes[i].Move();
-        }
-
-        // Удаляем последний элемент и выводим информацию
-        dynamic lastShape = shapes.RemoveLast();
-        Console.WriteLine("Последняя фигура удалена.");
-
-        // Очищаем список
-        shapes.Clear();
-        Console.WriteLine("Список очищен.");
-
-        // Добавляем элементы снова
-        shapes.Add(new MyPoint());
-        shapes.Add(new Segment());
-
-        // Удаляем элемент по индексу
-        shapes.RemoveAt(0);
-        Console.WriteLine("Элемент с индексом 0 удален.");
-
-        // Вызываем метод Move() для оставшихся фигур
-        for (int i = 0; i < shapes.Count; i++)
-        {
-            shapes[i].Move();
-        }
-    }
-}

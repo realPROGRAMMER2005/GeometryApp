@@ -12,3 +12,18 @@ D:\Programming\OOP C# Lab Works\GeometryApp\GeometryApp\obj\Debug\net8.0-windows
 D:\Programming\OOP C# Lab Works\GeometryApp\GeometryApp\obj\Debug\net8.0-windows\GeometryApp.pdb
 D:\Programming\OOP C# Lab Works\GeometryApp\GeometryApp\obj\Debug\net8.0-windows\GeometryApp.genruntimeconfig.cache
 D:\Programming\OOP C# Lab Works\GeometryApp\GeometryApp\obj\Debug\net8.0-windows\ref\GeometryApp.dll
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\obj\Debug\net8.0-windows\GeometryApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\obj\Debug\net8.0-windows\GeometryApp.AssemblyInfoInputs.cache
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\obj\Debug\net8.0-windows\GeometryApp.AssemblyInfo.cs
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\obj\Debug\net8.0-windows\GeometryApp.csproj.CoreCompileInputs.cache
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\obj\Debug\net8.0-windows\GeometryApp.sourcelink.json
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\obj\Debug\net8.0-windows\GeometryApp.dll
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\obj\Debug\net8.0-windows\refint\GeometryApp.dll
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\obj\Debug\net8.0-windows\GeometryApp.pdb
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\bin\Debug\net8.0-windows\GeometryApp.exe
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\bin\Debug\net8.0-windows\GeometryApp.deps.json
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\bin\Debug\net8.0-windows\GeometryApp.runtimeconfig.json
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\bin\Debug\net8.0-windows\GeometryApp.dll
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\bin\Debug\net8.0-windows\GeometryApp.pdb
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\obj\Debug\net8.0-windows\GeometryApp.genruntimeconfig.cache
+C:\Denis\GeometryApp\GeometryApp\GeometryApp\obj\Debug\net8.0-windows\ref\GeometryApp.dll

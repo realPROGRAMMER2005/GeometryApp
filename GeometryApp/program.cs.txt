@@ -1,3 +1,190 @@
+Dictionary.cs:
+public class MyDictionary
+{
+  private dynamic[] _keys;
+  private dynamic[] _values;
+  private int _size;
+
+  public MyDictionary()
+  {
+    _keys = new dynamic[4];
+    _values = new dynamic[4];
+    _size = 0;
+  }
+
+  public int Count
+  {
+    get { return _size; }
+  }
+
+  public dynamic this[dynamic key]
+  {
+    get
+    {
+      int index = Array.IndexOf(_keys, key, 0, _size);
+      if (index < 0)
+        throw new KeyNotFoundException($"Ключ '{key}' не найден.");
+      return _values[index];
+    }
+    set
+    {
+      int index = Array.IndexOf(_keys, key, 0, _size);
+      if (index >= 0)
+      {
+        _values[index] = value; // Изменяем существующее значение
+      }
+      else
+      {
+        // Добавляем новый ключ-значение
+        if (_size == _keys.Length)
+        {
+          int newCapacity = _keys.Length * 2;
+          dynamic[] newKeys = new dynamic[newCapacity];
+          dynamic[] newValues = new dynamic[newCapacity];
+          Array.Copy(_keys, newKeys, _keys.Length);
+          Array.Copy(_values, newValues, _values.Length);
+          _keys = newKeys;
+          _values = newValues;
+        }
+        _keys[_size] = key;
+        _values[_size] = value;
+        _size++;
+      }
+    }
+  }
+
+  public dynamic GetElementByKey(dynamic key)
+  {
+    int index = Array.IndexOf(_keys, key, 0, _size);
+    if (index < 0)
+      throw new KeyNotFoundException($"Ключ '{key}' не найден.");
+    return _values[index];
+  }
+
+  public dynamic[] GetKeys()
+  {
+    dynamic[] keysCopy = new dynamic[_size];
+    Array.Copy(_keys, keysCopy, _size);
+    return keysCopy;
+  }
+
+  public void Clear()
+  {
+    for (int i = 0; i < _size; i++)
+    {
+      _keys[i] = null;
+      _values[i] = null;
+    }
+    _size = 0;
+  }
+
+  public void RemoveAt(dynamic key)
+  {
+    int index = Array.IndexOf(_keys, key, 0, _size);
+    if (index < 0)
+      throw new KeyNotFoundException($"Ключ '{key}' не найден.");
+
+    int moveCount = _size - index - 1;
+    if (moveCount > 0)
+    {
+      Array.Copy(_keys, index + 1, _keys, index, moveCount);
+      Array.Copy(_values, index + 1, _values, index, moveCount);
+    }
+    _keys[_size - 1] = null;
+    _values[_size - 1] = null;
+    _size--;
+  }
+
+  public dynamic[] GetElements()
+  {
+    dynamic[] valuesCopy = new dynamic[_size];
+    Array.Copy(_values, valuesCopy, _size);
+    return valuesCopy;
+  }
+}
+---
+DynamicList.cs:
+public class MyDynamicList
+{
+    private dynamic[] _items;
+    private int _size;
+
+    public MyDynamicList()
+    {
+        _items = new dynamic[4];
+        _size = 0;
+    }
+
+    public int Count
+    {
+        get { return _size; }
+    }
+
+    public dynamic this[int index]
+    {
+        get
+        {
+            if (index < 0 || index >= _size)
+                throw new ArgumentOutOfRangeException(nameof(index));
+            return _items[index];
+        }
+        set
+        {
+            if (index < 0 || index >= _size)
+                throw new ArgumentOutOfRangeException(nameof(index));
+            _items[index] = value;
+        }
+    }
+
+    public void Add(dynamic item)
+    {
+        if (_size == _items.Length)
+        {
+            int newCapacity = _items.Length * 2;
+            dynamic[] newItems = new dynamic[newCapacity];
+            Array.Copy(_items, newItems, _items.Length);
+            _items = newItems;
+        }
+        _items[_size] = item;
+        _size++;
+    }
+
+    public dynamic RemoveLast()
+    {
+        if (_size == 0)
+            throw new InvalidOperationException("Список пуст.");
+        _size--;
+        dynamic item = _items[_size];
+        _items[_size] = null;
+        return item;
+    }
+
+    public void Clear()
+    {
+        for (int i = 0; i < _size; i++)
+        {
+            _items[i] = null;
+        }
+        _size = 0;
+    }
+
+    public void RemoveAt(int index)
+    {
+        if (index < 0 || index >= _size)
+            throw new ArgumentOutOfRangeException(nameof(index));
+        int moveCount = _size - index - 1;
+        if (moveCount > 0)
+        {
+            Array.Copy(_items, index + 1, _items, index, moveCount);
+        }
+        _size--;
+        _items[_size] = null;
+    }
+}
+
+
+---
+Form1.cs:
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -940,6 +1127,742 @@ namespace GeometryApp
                     squareX1 = null;
                     squareY1 = null;
                 }
+            }
+        }
+    }
+}
+
+---
+Circle.cs:
+public class MyCircle
+    {
+        private int x, y;
+        private int radius;
+        private Color color;
+        private bool filled;
+        private Color borderColor;
+        private int borderSize;
+        private bool isBordered;
+
+        public MyCircle()
+        {
+            this.x = 0;
+            this.y = 0;
+            this.radius = 50;
+            this.color = Color.Red;
+            this.filled = false;
+            this.borderColor = Color.Transparent;
+            this.borderSize = 0;
+            this.isBordered = false;
+        }
+
+        public void Create(int x, int y, int radius)
+        {
+            this.x = x;
+            this.y = y;
+            this.radius = Math.Abs(radius);
+        }
+
+        public void Move(int newX, int newY)
+        {
+            this.x = newX;
+            this.y = newY;
+        }
+
+        public void Rotate(int degrees)
+        {
+        }
+
+        public void Fill()
+        {
+            this.filled = true;
+        }
+
+        public bool hasBorder()
+        {
+            return isBordered;
+        }
+
+        public void SetBorder(int size, Color color)
+        {
+            this.borderSize = size;
+            this.isBordered = true;
+            this.borderColor = color;
+        }
+
+        public void Remove()
+        {
+        }
+
+        public void Unfill()
+        {
+            this.filled = false;
+            this.borderColor = Color.Transparent;
+        }
+
+        public bool IsFilled() { return filled; }
+
+        public void ChangeColor(Color newColor)
+        {
+            this.color = newColor;
+        }
+
+        public void ChangeBorderColor(Color newBorderColor)
+        {
+            this.borderColor = newBorderColor;
+        }
+
+        public void NoBorder()
+        {
+            this.borderSize = 0;
+            this.isBordered = false;
+            this.borderColor = Color.Transparent;
+        }
+
+        public Color GetBorderColor()     { return borderColor; }
+        public int GetBorderSize()      { return borderSize; }
+        public Color GetColor()         { return color; }
+
+        public int GetX() { return x; }
+        public int GetY() { return y; }
+        public int GetRadius() { return radius; }
+
+        public void SetRadius(int radius) { this.radius = radius; }
+
+        public void Draw(Graphics g)
+        {
+            using (Brush brush = new SolidBrush(color))
+            {
+                if (filled)
+                {
+                    g.FillEllipse(brush, x - radius, y - radius, radius * 2, radius * 2);
+                }
+            }
+
+            using (Pen pen = new Pen(color, 2))
+            {
+                g.DrawEllipse(pen, x - radius, y - radius, radius * 2, radius * 2);
+            }
+
+            if (IsFilled() && isBordered && borderSize > 0 && borderColor != Color.Transparent)
+            {
+                using (Pen pen = new Pen(borderColor, borderSize))
+                {
+                    g.DrawEllipse(pen, x - radius, y - radius, radius * 2, radius * 2);
+                }
+            }
+        }
+    }
+---
+Ellipse.cs:
+public class MyEllipse
+{
+    private int x, y;
+    private int width, height;
+    private Color color;
+    private bool filled;
+    private Color borderColor;
+    private int borderSize;
+
+    private bool isBordered = false;
+
+    public MyEllipse()
+    {
+        this.x = 0;
+        this.y = 0;
+        this.width = 100;
+        this.height = 50;
+        this.color = Color.Red;
+        this.filled = false;
+        this.borderColor = Color.Transparent;
+        this.borderSize = 0;
+        this.isBordered = false;
+    }
+
+    public void Create(int x, int y, int width, int height)
+    {
+        this.x = x;
+        this.y = y;
+        this.width = Math.Abs(width);
+        this.height = Math.Abs(height);
+    }
+
+    public void SetWidth(int newWidth)
+    {
+        this.width = newWidth;
+    }
+
+    public void SetHeight(int newHeight)
+    {
+        this.height = newHeight;
+    }
+
+    public Color GetBorderColor()     { return borderColor; }
+    public int GetBorderSize()      { return borderSize; }
+    public Color GetColor()         { return color; }
+
+    public int GetWidth() { return width; }
+    public int GetHeight() { return height; }
+
+    public bool IsFilled() { return filled; }
+
+    public int GetX() { return x; }
+    public int GetY() { return y; }
+
+    public bool hasBorder() {
+        return isBordered;
+    }
+
+    public void Move(int newX, int newY)
+    {
+        this.x = newX;
+        this.y = newY;
+    }
+
+    public void Rotate(int degrees)
+    {
+    }
+
+    public void Fill()
+    {
+        this.filled = true;
+    }
+
+    public void SetBorder(int size, Color color)
+    {
+        this.borderSize = size;
+        this.isBordered = true;
+        this.borderColor = color;
+    }
+
+    public void Remove()
+    {
+    }
+
+    public void Unfill()
+    {
+        this.filled = false;
+        this.borderColor = Color.Transparent;
+    }
+
+    public void ChangeColor(Color newColor)
+    {
+        this.color = newColor;
+    }
+
+    public void ChangeBorderColor(Color newBorderColor)
+    {
+        this.borderColor = newBorderColor;
+    }
+
+    public void NoBorder()
+    {
+        this.borderSize = 0;
+        this.borderColor = Color.Transparent;
+        this.isBordered = false;
+    }
+
+    public void Draw(Graphics g)
+    {
+        using (Brush brush = new SolidBrush(color))
+        {
+            if (filled)
+            {
+                g.FillEllipse(brush, x, y, width, height);
+            }
+        }
+
+        using (Pen pen = new Pen(color, 2))
+        {
+            g.DrawEllipse(pen, x, y, width, height);
+        }
+
+        if (hasBorder() && borderSize > 0 && borderColor != Color.Transparent)
+        {
+            using (Pen pen = new Pen(borderColor, borderSize)) {
+                g.DrawEllipse(pen, x, y, width, height);
+            }
+        }
+    }
+}
+Point.cs:
+public class MyPoint
+{
+    private int x;
+    private int y;
+    private Color color;
+    private bool filled;
+    private Color borderColor;
+    private int borderSize;
+
+    // Конструктор
+    public MyPoint()
+    {
+        // Установим дефолтные параметры
+        this.x = 0;
+        this.y = 0;
+        this.color = Color.Black;
+        this.filled = false;
+        this.borderColor = Color.Transparent;
+        this.borderSize = 0;
+    }
+
+    // Метод создания точки
+    public void Create(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    // Метод перемещения точки
+    public void Move(int newX, int newY)
+    {
+        this.x = newX;
+        this.y = newY;
+    }
+
+    // Метод вращения точки (для точки этот метод не имеет смысла, но должен быть)
+    public void Rotate(int degrees)
+    {
+        // Поскольку точка не имеет размеров, вращение не изменяет её
+    }
+
+    // Метод закрашивания
+    public void Fill()
+    {
+        this.filled = true;
+    }
+
+    // Метод создания обводки
+    public void Border(int size, int r, int g, int b)
+    {
+        this.borderSize = size;
+        this.borderColor = Color.FromArgb(r, g, b);
+    }
+
+    // Метод удаления фигуры
+    public void Remove()
+    {
+        // Здесь можно добавить логику для удаления точки (если нужно)
+    }
+
+
+
+    // Метод изменения цвета
+    public void ChangeColor(Color newColor)
+    {
+        this.color = newColor;
+    }
+
+    // Метод изменения цвета обводки
+    public void ChangeBorderColor(Color newBorderColor)
+    {
+        this.borderColor = newBorderColor;
+    }
+
+    // Метод удаления обводки
+    public void NoBorder()
+    {
+        this.borderSize = 0;
+        this.borderColor = Color.Transparent;
+    }
+
+    public int GetX()
+    {
+        return x;
+    }
+
+    public int GetY()
+    {
+        return y;
+    }
+
+    // Метод отрисовки точки
+    public void Draw(Graphics g)
+    {
+        // Рисуем точку
+        Brush brush = new SolidBrush(color);
+        g.FillEllipse(brush, x - 2, y - 2, 4, 4); // Рисуем точку как маленький круг
+
+        if (borderSize > 0 && borderColor != Color.Transparent)
+        {
+            Pen pen = new Pen(borderColor, borderSize);
+            g.DrawEllipse(pen, x - 2, y - 2, 4, 4); // Обводка вокруг точки
+        }
+    }
+}
+---
+Rectangle.cs:
+public class MyRectangle
+{
+    private int x, y;
+    private int width, height;
+    private Color color;
+    private bool filled;
+    private Color borderColor;
+    private int borderSize;
+    private bool isBordered;
+
+    public MyRectangle()
+    {
+        this.x = 0;
+        this.y = 0;
+        this.width = 100;
+        this.height = 50;
+        this.color = Color.Red;
+        this.filled = false;
+        this.borderColor = Color.Black;
+        this.borderSize = 3;
+        this.isBordered = false;
+    }
+
+    public void Create(int x, int y, int width, int height)
+    {
+        this.x = x;
+        this.y = y;
+        this.width = Math.Abs(width);
+        this.height = Math.Abs(height);
+    }
+
+    public int GetX() { return x; }
+    public int GetY() { return y; }
+
+    public int GetWidth() { return width; }
+    public int GetHeight() { return height; }
+
+    public Color GetBorderColor() { return borderColor; }
+    public int GetBorderSize() { return borderSize; }
+    public Color GetColor() { return color; }
+
+    public bool IsFilled() { return filled; }
+
+    public void SetWidth(int newWidth)
+    {
+        this.width = newWidth;
+    }
+
+    public void SetHeight(int newHeight)
+    {
+        this.height = newHeight;
+    }
+
+    public void Move(int newX, int newY)
+    {
+        this.x = newX;
+        this.y = newY;
+    }
+
+    public void Rotate(int degrees)
+    {
+    }
+
+    public void Fill()
+    {
+        this.filled = true;
+    }
+
+    public void SetBorder(int size, Color color)
+    {
+        this.borderSize = size;
+        this.isBordered = true;
+        this.borderColor = color;
+    }
+
+    public void Remove()
+    {
+    }
+
+    public void Unfill()
+    {
+        this.filled = false;
+        this.borderColor = Color.Transparent;
+    }
+
+    public void ChangeColor(Color newColor)
+    {
+        this.color = newColor;
+    }
+
+    public void ChangeBorderColor(Color newBorderColor)
+    {
+        this.borderColor = newBorderColor;
+    }
+
+    public void NoBorder()
+    {
+        this.borderSize = 0;
+        this.isBordered = false;
+        this.borderColor = Color.Transparent;
+    }
+
+    public bool hasBorder()
+    {
+        return isBordered;
+    }
+
+    public void Draw(Graphics g)
+    {
+        using (Brush brush = new SolidBrush(color))
+        {
+            if (filled)
+            {
+                g.FillRectangle(brush, x, y, width, height);
+            }
+        }
+
+        using (Pen pen = new Pen(color, 2))
+        {
+            g.DrawRectangle(pen, x, y, width, height);
+        }
+
+        if (IsFilled() && isBordered && borderSize > 0 && borderColor != Color.Transparent)
+        using (Pen pen = new Pen(borderColor, borderSize))
+        {
+            g.DrawRectangle(pen, x, y, width, height);
+        }
+    }
+}
+---
+Segment.cs:
+public class Segment
+{
+    private int x1, y1;
+    private int x2, y2;
+    private Color color;
+    private bool filled;
+    private Color borderColor;
+    private int borderSize;
+
+    private int width;
+
+    public Segment()
+    {
+        this.x1 = 0;
+        this.y1 = 0;
+        this.x2 = 0;
+        this.y2 = 0;
+        this.color = Color.Black;
+        this.filled = false;
+        this.borderColor = Color.Transparent;
+        this.borderSize = 0;
+        this.width = 2;
+    }
+
+    public void Create(int x1, int y1, int x2, int y2)
+    {
+        this.x1 = x1;
+        this.y1 = y1;
+        this.x2 = x2;
+        this.y2 = y2;
+    }
+
+    public void SetWidth(int newWidth)
+    {
+        this.width = newWidth;
+    }
+
+    public int GetWidth() {
+        return this.width;
+    }
+
+    public void Move(int newX1, int newY1, int newX2, int newY2)
+    {
+        this.x1 = newX1;
+        this.y1 = newY1;
+        this.x2 = newX2;
+        this.y2 = newY2;
+    }
+
+    public void Rotate(int degrees)
+    {
+        // Rotation logic can be implemented here
+    }
+
+    public void Fill()
+    {
+        this.filled = true;
+    }
+
+    public void Border(int size, int r, int g, int b)
+    {
+        this.borderSize = size;
+        this.borderColor = Color.FromArgb(r, g, b);
+    }
+
+    public void Remove()
+    {
+        // Logic for removing the segment (if necessary)
+    }
+
+    public void NoFill()
+    {
+        this.filled = false;
+        this.borderColor = Color.Transparent;
+    }
+
+    public void ChangeColor(Color newColor)
+    {
+        this.color = newColor;
+    }
+
+    public void ChangeBorderColor(Color newBorderColor)
+    {
+        this.borderColor = newBorderColor;
+    }
+
+    public Color GetColor() { return color; }
+
+    public void NoBorder()
+    {
+        this.borderSize = 0;
+        this.borderColor = Color.Transparent;
+    }
+
+    public void Draw(Graphics g)
+    {
+        Pen pen = new Pen(color, this.width);
+        g.DrawLine(pen, x1, y1, x2, y2);
+    }
+
+    public int GetX1() { return x1; }
+    public int GetY1() { return y1; }
+    public int GetX2() { return x2; }
+    public int GetY2() { return y2; }
+}
+---
+Square.cs:
+public class MySquare
+{
+    private int x, y;
+    private int side;
+    private Color color;
+    private bool filled;
+    private Color borderColor;
+    private int borderSize;
+    private bool isBordered;
+
+    public MySquare()
+    {
+        this.x = 0;
+        this.y = 0;
+        this.side = 100;
+        this.color = Color.Red;
+        this.filled = false;
+        this.borderColor = Color.Black;
+        this.borderSize = 3;
+        this.isBordered = false;
+    }
+
+    public void Create(int x, int y, int side)
+    {
+        this.x = x;
+        this.y = y;
+        this.side = Math.Abs(side);
+    }
+
+    public void Move(int newX, int newY)
+    {
+        this.x = newX;
+        this.y = newY;
+    }
+
+    public void Rotate(int degrees)
+    {
+    }
+
+    public int GetX() { return x; }
+    public int GetY() { return y; }
+
+    public int GetWidth() { return side; }
+    public int GetHeight() { return side; }
+
+    public int GetSide() { return side; }
+
+    public Color GetBorderColor() { return borderColor; }
+    public int GetBorderSize() { return borderSize; }
+    public Color GetColor() { return color; }
+
+    public bool IsFilled() { return filled; }
+
+    public void SetSide(int newSide)
+    {
+        this.side = newSide;
+    }
+
+    public void SetWidth(int newWidth)
+    {
+        this.side = newWidth;
+    }
+
+    public void SetHeight(int newHeight)
+    {
+        this.side = newHeight;
+    }
+
+    public void Fill()
+    {
+        this.filled = true;
+    }
+
+    public void SetBorder(int size, Color color)
+    {
+        this.borderSize = size;
+        this.isBordered = true;
+        this.borderColor = color;
+    }
+
+    public void Remove()
+    {
+    }
+
+    public void Unfill()
+    {
+        this.filled = false;
+        this.borderColor = Color.Transparent;
+    }
+
+    public void ChangeColor(Color newColor)
+    {
+        this.color = newColor;
+    }
+
+    public void ChangeBorderColor(Color newBorderColor)
+    {
+        this.borderColor = newBorderColor;
+    }
+
+    public void NoBorder()
+    {
+        this.borderSize = 0;
+        this.isBordered = false;
+        this.borderColor = Color.Transparent;
+    }
+
+    public bool hasBorder()
+    {
+        return isBordered;
+    }
+
+    public void Draw(Graphics g)
+    {
+        using (Brush brush = new SolidBrush(color))
+        {
+            if (filled)
+            {
+                g.FillRectangle(brush, x, y, side, side);
+            }
+        }
+
+        using (Pen pen = new Pen(color, 2))
+        {
+            g.DrawRectangle(pen, x, y, side, side);
+        }
+
+        if (IsFilled() && isBordered && borderSize > 0 && borderColor != Color.Transparent)
+        {
+            using (Pen pen = new Pen(borderColor, borderSize))
+            {
+                g.DrawRectangle(pen, x, y, side, side);
             }
         }
     }
